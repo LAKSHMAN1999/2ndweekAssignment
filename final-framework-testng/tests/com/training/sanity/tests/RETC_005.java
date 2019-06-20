@@ -56,7 +56,7 @@ public class RETC_005 {
 	public void validLoginTest() {
 		loginPOM.sendUserName("LAKSHMAN");
 		loginPOM.sendPassword("lucky@123");
-		loginPOM.clickLoginBtn(); 
+		loginPOM.clickLoginBtn();
 		myprofile.clickMyprofile();
 		changepassword.clickChangePassword();
 		changepassword.sendCurrentPassword("lucky@123");
