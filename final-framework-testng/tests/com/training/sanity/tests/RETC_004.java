@@ -62,6 +62,7 @@ public class RETC_004 {
 		myprofile.sendphone("9876543210");
 		myprofile.clickSavechange();
 		screenShot.captureScreenShot("First");
+		//Exporting to GIT
 		
 		
 		

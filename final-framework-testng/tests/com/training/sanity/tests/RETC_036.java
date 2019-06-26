@@ -2,8 +2,11 @@ package com.training.sanity.tests;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -11,20 +14,18 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.training.generics.ScreenShot;
-import com.training.pom.ChangePassword;
+import com.training.pom.ENQUIRIESFORM;
 import com.training.pom.LoginPOM;
-import com.training.pom.Myprofile;
-//import com.training.pom.LoginPOM1;
+import com.training.pom.RealEstatehome;
 import com.training.utility.DriverFactory;
 import com.training.utility.DriverNames;
 
-public class RETC_005 {
+public class RETC_036 {
 
 	private WebDriver driver;
 	private String baseUrl;
-	private LoginPOM loginPOM;
-	private Myprofile myprofile;
-	private ChangePassword changepassword;
+	private RealEstatehome Home;
+	private ENQUIRIESFORM Enquiri;
 	private static Properties properties;
 	private ScreenShot screenShot;
 
@@ -38,9 +39,8 @@ public class RETC_005 {
 	@BeforeMethod
 	public void setUp() throws Exception {
 		driver = DriverFactory.getDriver(DriverNames.CHROME);
-		loginPOM = new LoginPOM(driver); 
-		myprofile =new Myprofile(driver);
-		changepassword=new ChangePassword(driver);
+		Home = new RealEstatehome(driver); 
+		Enquiri=new ENQUIRIESFORM(driver);
 		baseUrl = properties.getProperty("baseURL");
 		screenShot = new ScreenShot(driver); 
 		// open the browser 
@@ -53,17 +53,35 @@ public class RETC_005 {
 		driver.quit();
 	}
 	@Test
-	public void validLoginTest() {
-		loginPOM.sendUserName("LAKSHMAN");
-		loginPOM.sendPassword("lucky@123");
-		loginPOM.clickLoginBtn();
-		myprofile.clickMyprofile();
-		changepassword.clickChangePassword();
-		changepassword.sendCurrentPassword("lucky@123");
-		changepassword.sendNewPassword("mehadi");
-		changepassword.sendConfirmNewPassword("mehadi");
-		changepassword.clickSaveChanges();
+	public void logintest() throws InterruptedException {
+		Home.clickRealhome();
+		Home.clickVillas();
+		Home.clickSearchProperties();
+		
+		Home.sendSearchPropertie(properties.getProperty("Apartmentsearchbox"));
+		Home.clickSearchResult();
+		
+		String parentWindow = driver.getWindowHandle();
+		List<String> windowHandles= new ArrayList(driver.getWindowHandles());
+		System.out.println(windowHandles.size());
+		String lastwindow=null;
+		for(int i=0; i<windowHandles.size(); i++)
+		{
+			lastwindow=windowHandles.get(i).toString();
+			
+			System.out.println(lastwindow);
+		}
+		driver.switchTo().window(lastwindow);	
+		
+		Enquiri.sendyourname("selenium");
+		Enquiri.sendyouremail("selenium@gmail.com");
+		Enquiri.sendyoursubject("apartment");
+		Enquiri.sendyourmessage("looking for apartment");
+		Enquiri.clickSendbutton();
+		
+		Thread.sleep(4000);
 		screenShot.captureScreenShot("First");
-		//Exporting to GIT
+		
+		//driver.switchTo().window(parentWindow); ////
 	}
 }
